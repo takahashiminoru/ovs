@@ -381,6 +381,11 @@ enum ofpraw {
     /* OFPST 1.4+ (13): uint8_t[8][]. */
     OFPRAW_OFPST14_PORT_DESC_REPLY,
 
+    /* OFPST 1.4+ (15): struct ofp14_queue_desc_request. */
+    OFPRAW_OFPST14_QUEUE_DESC_REQUEST,
+    /* OFPST 1.4+ (15): struct ofp14_queue_desc_stats. */
+    OFPRAW_OFPST14_QUEUE_DESC_REPLY,
+
     /* OFPST 1.4+ (16): uint8_t[8][]. */
     OFPRAW_OFPST14_FLOW_MONITOR_REQUEST,
     /* NXST 1.0 (2): uint8_t[8][]. */
