@@ -943,6 +943,15 @@ int ofputil_decode_port_stats(struct ofputil_port_stats *, struct ofpbuf *msg);
 enum ofperr ofputil_decode_port_stats_request(const struct ofp_header *request,
                                               ofp_port_t *ofp10_port);
 
+struct ofputil_queue_desc_request {
+    ofp_port_t port_no;           /* OFPP_ANY means "all ports". */
+    uint32_t queue_id;
+};
+
+struct ofpbuf *
+ofputil_encode_queue_desc_request(enum ofp_version ofp_version,
+                                   const struct ofputil_queue_desc_request *oqsr);
+
 struct ofputil_queue_stats_request {
     ofp_port_t port_no;           /* OFPP_ANY means "all ports". */
     uint32_t queue_id;

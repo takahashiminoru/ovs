@@ -8465,6 +8465,39 @@ ofputil_decode_queue_stats_request(const struct ofp_header *request,
     }
 }
 
+
+/* Encode a queue desc request for 'oqsr'. Returns message
+ * as a struct ofpbuf. Returns encoded message on success, NULL on error. */
+struct ofpbuf *
+ofputil_encode_queue_desc_request(enum ofp_version ofp_version,
+                                  const struct ofputil_queue_desc_request *oqsr)
+{
+    struct ofpbuf *request;
+
+    switch (ofp_version) {
+    case OFP10_VERSION:
+    case OFP11_VERSION:
+    case OFP12_VERSION:
+    case OFP13_VERSION:
+        ovs_fatal(0, "dump-queue-desc-stats needs OpenFlow 1.4 or later "
+                     "(\'-O OpenFlow14\')");
+    case OFP14_VERSION:
+    case OFP15_VERSION: {
+        struct ofp14_queue_desc_request *req;
+        request = ofpraw_alloc(OFPRAW_OFPST14_QUEUE_DESC_REQUEST, ofp_version, 0);
+        req = ofpbuf_put_zeros(request, sizeof *req);
+        req->port_no = ofputil_port_to_ofp11(oqsr->port_no);
+        req->queue_id = htonl(oqsr->queue_id);
+        break;
+    }
+    default:
+        OVS_NOT_REACHED();
+    }
+
+    return request;
+}
+
+
 /* Encode a queue stats request for 'oqsr', the encoded message
  * will be for OpenFlow version 'ofp_version'. Returns message
  * as a struct ofpbuf. Returns encoded message on success, NULL on error. */
