@@ -217,6 +217,25 @@ struct ofp14_queue_stats {
 };
 OFP_ASSERT(sizeof(struct ofp14_queue_stats) == 48);
 
+/* ## ---------------------- ## */
+/* ## ofp14_queue_desc_stats ## */
+/* ## ---------------------- ## */
+
+/* Common header for all queue properties */
+struct ofp14_queue_desc_prop_header {
+    ovs_be16 type;          /* One of OFPQDPT_*. */
+    ovs_be16 length;        /* Length in bytes of this property. */
+};
+OFP_ASSERT(sizeof(struct ofp14_queue_desc_prop_header) == 4);
+
+struct ofp14_queue_desc_stats {
+    ovs_be32 port_no;       /* Port this queue is attached to. */
+    ovs_be32 queue_id;      /* id for the specific queue. */
+    ovs_be16 len;           /* Length in bytes of this queue desc. */
+    uint8_t pad[6];         /* 64-bit alignment. */
+    struct ofp14_queue_desc_prop_header properties[0]; /* List of properties. */
+};
+OFP_ASSERT(sizeof(struct ofp14_queue_desc_stats) == 16);
 
 /* ## -------------- ## */
 /* ## Miscellaneous. ## */
@@ -366,6 +385,13 @@ struct ofp14_bundle_ctrl_msg {
      * - Zero or more properties (see struct ofp14_bundle_prop_header). */
 };
 OFP_ASSERT(sizeof(struct ofp14_bundle_ctrl_msg) == 8);
+
+/* Body for ofp14_multipart_request of type OFPMP_QUEUE_DESC. */
+struct ofp14_queue_desc_request {
+    ovs_be32 port_no;         /* All ports if OFPP_ANY. */
+    ovs_be32 queue_id;        /* All queues if OFPQ_ALL. */
+};
+OFP_ASSERT(sizeof(struct ofp14_queue_desc_request) == 8);
 
 /* Body for ofp14_multipart_request of type OFPMP_FLOW_MONITOR.
  *
