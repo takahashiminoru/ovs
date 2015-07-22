@@ -948,6 +948,10 @@ struct ofputil_queue_desc_request {
     uint32_t queue_id;
 };
 
+enum ofperr
+ofputil_decode_queue_desc_request(const struct ofp_header *request,
+                                   struct ofputil_queue_desc_request *oqsr);
+
 struct ofpbuf *
 ofputil_encode_queue_desc_request(enum ofp_version ofp_version,
                                    const struct ofputil_queue_desc_request *oqsr);
